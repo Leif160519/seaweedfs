@@ -1,14 +1,19 @@
 - [seaweed仓库地址](https://github.com/chrislusf/seaweedfs)
 - [seaweed版本发布地址](https://github.com/chrislusf/seaweedfs/releases)
 
+原理图
 ![image.png](images/4.png)
 
+master:9333
 ![image.png](images/1.png)
 
+volume1:8080
 ![image.png](images/2.png)
 
+volume2:8081
 ![image.png](images/3.png)
 
+filer:8888
 ![image.png](images/5.png)
 
 
