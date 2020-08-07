@@ -2,9 +2,13 @@
 - [seaweed版本发布地址](https://github.com/chrislusf/seaweedfs/releases)
 
 ![image.png](images/4.png)
+
 ![image.png](images/1.png)
+
 ![image.png](images/2.png)
+
 ![image.png](images/3.png)
+
 ![image.png](images/5.png)
 
 
