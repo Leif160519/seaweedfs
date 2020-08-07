@@ -1,0 +1,10 @@
+[Unit]
+Description=weed-master-server
+After=network.target
+
+[Service]
+ExecStart=/data/weed mount -filer="localhost:8888" -dir="/seaweedfs"
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

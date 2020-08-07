@@ -1,0 +1,10 @@
+[Unit]
+Description=weed-master-server
+After=network.target
+
+[Service]
+ExecStart=/data/weed master
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
