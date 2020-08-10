@@ -3,7 +3,7 @@ Description=weed-master-server
 After=network.target
 
 [Service]
-ExecStart=/data/weed master
+ExecStart=/usr/local/bin/weed master
 Restart=on-failure
 
 [Install]

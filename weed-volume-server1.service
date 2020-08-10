@@ -3,7 +3,7 @@ Description=weed-volume-server1
 After=network.target
 
 [Service]
-ExecStart=/data/weed volume -dir="/data/seaweedfs1" -max=5  -mserver="localhost:9333" -port=8080
+ExecStart=/usr/local/bin/weed volume -dir="/seaweedfs/block/1" -max=5  -mserver="localhost:9333" -port=8080
 Restart=on-failure
 
 [Install]

@@ -3,7 +3,7 @@ Description=weed-master-server
 After=network.target
 
 [Service]
-ExecStart=/data/weed mount -filer="localhost:8888" -dir="/seaweedfs"
+ExecStart=/usr/local/bin/weed mount -filer="localhost:8888" -dir="/seaweedfs/mount"
 Restart=on-failure
 
 [Install]

@@ -3,7 +3,7 @@ Description=weed-master-server
 After=network.target
 
 [Service]
-ExecStart=/data/weed filer -master="localhost:9333" -port=8888
+ExecStart=/usr/local/bin/weed filer -master="localhost:9333" -port=8888
 Restart=on-failure
 
 [Install]
