@@ -1,16 +1,16 @@
 #!/bin/bash
 ip=`ip a | grep inet | grep -v inet6 | grep -v 127.0.0.1 | sed 's/^[ \t]*//g' | cut -d ' ' -f2 |cut -d '/' -f1 | grep -v 172. | head -1`
-# 单节点:3 master(9331-9333) + 3 volume(8081-8083) + 2 filer(8801-8802)
+# 单节点:3 master(9331-9333) + 3 volume(8081-8083) + 1 filer(8888) + 1 mount
 
 #将二进制文件复制到指定目录(如果有则不覆盖)
 cp -n bin/weed /usr/local/bin
 
 #创建目录结构
 #创建日志目录
-mkdir -p /seaweedfs/log/{master1,master2,master3,volume1,volume2,volume3,filer1,filer2,mount1,mount2}
+mkdir -p /seaweedfs/log/{master1,master2,master3,volume1,volume2,volume3,filer,mount}
 
 # 创建数据存储目录
-mkdir -p /seaweedfs/{master/{mdir1,mdir2,mdir3},volume/{data1,data2,data3},mount1,mount2}
+mkdir -p /seaweedfs/{master/{mdir1,mdir2,mdir3},volume/{data1,data2,data3},mount}
 
 # 生成配置文件
 mkdir -p /seaweedfs/filer
@@ -63,21 +63,13 @@ command="/usr/local/bin/weed -logdir=/seaweedfs/log/volume3 volume -dir=/seaweed
 create_service
 
 #filer服务
-service_name="weed-filer-server1"
-command="/usr/local/bin/weed -logdir=/seaweedfs/log/filer1 filer -master=${ip}:9331,${ip}:9332,${ip}:9333 -port=8801 -defaultReplicaPlacement=001"
-create_service
-
-service_name="weed-filer-server2"
-command="/usr/local/bin/weed -logdir=/seaweedfs/log/filer2 filer -master=${ip}:9331,${ip}:9332,${ip}:9333 -port=8802 -defaultReplicaPlacement=001"
+service_name="weed-filer-server"
+command="/usr/local/bin/weed -logdir=/seaweedfs/log/filer filer -master=${ip}:9331,${ip}:9332,${ip}:9333 -port=8888 -defaultReplicaPlacement=001"
 create_service
 
 #mount服务
 service_name="weed-mount-server1"
-command="/usr/local/bin/weed -logdir=/seaweedfs/log/mount1 mount -filer=${ip}:8801 -dir=/seaweedfs/mount1"
-create_service
-
-service_name="weed-mount-server2"
-command="/usr/local/bin/weed -logdir=/seaweedfs/log/mount2 mount -filer=${ip}:8802 -dir=/seaweedfs/mount2"
+command="/usr/local/bin/weed -logdir=/seaweedfs/log/mount mount -filer=${ip}:8888 -dir=/seaweedfs/mount"
 create_service
 
 # 重载配置

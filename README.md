@@ -39,9 +39,7 @@ seaweed二进制文件
 │   ├── mount
 │   └── volume
 ├── master
-│   └── snapshot
 ├── mount
-│   └── topics
 └── volume
 ```
 
@@ -53,32 +51,28 @@ seaweed二进制文件
 /seaweedfs/
 ├── filer
 ├── log
-│   ├── filer1
-│   ├── filer2
+│   ├── filer
 │   ├── master1
 │   ├── master2
 │   ├── master3
-│   ├── mount1
-│   ├── mount2
+│   ├── mount
 │   ├── volume1
 │   ├── volume2
 │   └── volume3
 ├── master
 │   ├── mdir1
-│   │   └── snapshot
 │   ├── mdir2
-│   │   └── snapshot
 │   └── mdir3
-│       └── snapshot
-├── mount1
-│   └── topics
-├── mount2
-│   └── topics
+├── mount
 └── volume
     ├── data1
     ├── data2
     └── data3
 ```
+
+> master节点必须奇数个
+> 当filer与mount一起使用时，filer仅提供文件元数据检索，实际文件内容直接在mount和volume服务器之间读写，所以不需要多个filer 
+
 
 ### upload.sh
 文件上传脚本
