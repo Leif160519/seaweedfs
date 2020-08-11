@@ -68,7 +68,7 @@ command="/usr/local/bin/weed -logdir=/seaweedfs/log/filer filer -master=${ip}:93
 create_service
 
 #mount服务
-service_name="weed-mount-server1"
+service_name="weed-mount-server"
 command="/usr/local/bin/weed -logdir=/seaweedfs/log/mount mount -filer=${ip}:8888 -dir=/seaweedfs/mount"
 create_service
 
@@ -82,10 +82,8 @@ systemctl start weed-master-server3.service
 systemctl start weed-volume-server1.service
 systemctl start weed-volume-server2.service
 systemctl start weed-volume-server3.service
-systemctl start weed-filer-server1.service
-systemctl start weed-filer-server2.service
-systemctl start weed-mount-server1.service
-systemctl start weed-mount-server2.service
+systemctl start weed-filer-server.service
+systemctl start weed-mount-server.service
 
 #设置服务开机自启
 systemctl enable weed-master-server1.service
@@ -95,9 +93,7 @@ systemctl enable weed-volume-server1.service
 systemctl enable weed-volume-server2.service
 systemctl enable weed-volume-server3.service
 systemctl enable weed-filer-server1.service
-systemctl enable weed-filer-server2.service
 systemctl enable weed-mount-server1.service
-systemctl enable weed-mount-server2.service
 
 #查看进程状态
 ps -ef | grep weed
