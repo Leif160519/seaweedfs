@@ -21,25 +21,66 @@ filer:8888
 
 ![image.png](images/5.png)
 
-
 ## 1.文件说明
 
-### weed
+### /bin/weed
 seaweed二进制文件
 
-### weed-master-server.service
-master节点启动文件
+### single.sh
+单节点自动化搭建脚本
 
-## weed-volume-server1/2.service
-volume服务启动文件
+文件结构:
+```
+/seaweedfs
+├── filer
+├── log
+│   ├── filer
+│   ├── master
+│   ├── mount
+│   └── volume
+├── master
+│   └── snapshot
+├── mount
+│   └── topics
+└── volume
+```
 
-## weed-filer-server.service
-filer服务启动文件
+### cluster.sh
+集群自动化搭建脚本
 
-## weed-mount.service
-挂载服务
+文件结构：
+```
+/seaweedfs/
+├── filer
+├── log
+│   ├── filer1
+│   ├── filer2
+│   ├── master1
+│   ├── master2
+│   ├── master3
+│   ├── mount1
+│   ├── mount2
+│   ├── volume1
+│   ├── volume2
+│   └── volume3
+├── master
+│   ├── mdir1
+│   │   └── snapshot
+│   ├── mdir2
+│   │   └── snapshot
+│   └── mdir3
+│       └── snapshot
+├── mount1
+│   └── topics
+├── mount2
+│   └── topics
+└── volume
+    ├── data1
+    ├── data2
+    └── data3
+```
 
-## upload.sh
+### upload.sh
 文件上传脚本
 
 ## 2.seaweed用法简介
@@ -100,49 +141,7 @@ curl -X DELETE http://localhost:8888/path/to/dir?recursive=true&ignoreRecursiveE
 ```
 
 ## 4.部署seaweedfs步骤
-
-### 4.1 克隆项目
-```
-git clone https://github.com/Leif160519/seaweedfs.git
-```
-
-### 4.2 将weed二进制程序复制到`/usr/local/bin`下
-```
-cd seaweedfs
-cp weed /usr/local/bin
-```
-
-### 4.3 新建存储目录
-```
-# 新建块存储目录
-mkdir -p /seaweedfs/block/{1,2}
-# 新建挂载存储目录
-mkdir -p /seaweedfs/mount
-```
-
-### 4.4 将服务启动配置文件放到指定目录下
-```
-# ubuntu和centos都适用
-cp weed-*.service /lib/systemd/system
-```
-
-### 4.5 启动相关服务
-```
-systemctl start weed-master-server.service
-systemctl start weed-volume-server1.service 
-systemctl start weed-volume-server2.service 
-systemctl start weed-filer-server.service 
-systemctl start weed-mount-server.service
-```
-
-### 4.6 设置开机启动
-```
-systemctl enable weed-master-server.service
-systemctl enable weed-volume-server1.service
-systemctl enable weed-volume-server2.service
-systemctl enable weed-filer-server.service
-systemctl enable weed-mount-server.service
-```
+参看`single.sh`和`cluster.sh`脚本注解
 
 ## 5.参考
 - [seaweedfs搭建与使用](https://blog.wangqi.love/articles/seaweedfs/seaweedfs%E6%90%AD%E5%BB%BA%E4%B8%8E%E4%BD%BF%E7%94%A8.html)
