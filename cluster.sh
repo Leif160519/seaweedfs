@@ -5,6 +5,16 @@ ip=`ip a | grep inet | grep -v inet6 | grep -v 127.0.0.1 | sed 's/^[ \t]*//g' | 
 #将二进制文件复制到指定目录(如果有则不覆盖)
 cp -n bin/weed /usr/local/bin
 
+# 将配置文件复制到/etc/seaweedfs下
+mkdir -p /etc/seaweedfs
+cp -n filer.toml /etc/seaweedfs/
+
+# 安装redis
+apt-get -y install redis 
+
+#启动redis
+systemctl start redis
+
 #创建目录结构
 #创建日志目录
 mkdir -p /seaweedfs/log/{master1,master2,master3,volume1,volume2,volume3,filer,mount}
