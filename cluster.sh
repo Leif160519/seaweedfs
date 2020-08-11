@@ -1,6 +1,6 @@
 #!/bin/bash
 ip=`ip a | grep inet | grep -v inet6 | grep -v 127.0.0.1 | sed 's/^[ \t]*//g' | cut -d ' ' -f2 |cut -d '/' -f1 | grep -v 172. | head -1`
-# 单节点:3 master(9331-9333) + 3 volume(8081-8083) + 1 filer(8888) + 1 mount
+# 单节点:3 master(9331-9333) + 3 volume(8081-8083) + 2 filer(8888-8889) + 2 mount
 
 #将二进制文件复制到指定目录(如果有则不覆盖)
 cp -n bin/weed /usr/local/bin
@@ -17,10 +17,10 @@ systemctl start redis
 
 #创建目录结构
 #创建日志目录
-mkdir -p /seaweedfs/log/{master1,master2,master3,volume1,volume2,volume3,filer,mount}
+mkdir -p /seaweedfs/log/{master1,master2,master3,volume1,volume2,volume3,filer1,filer2,mount1,mount2}
 
 # 创建数据存储目录
-mkdir -p /seaweedfs/{master/{mdir1,mdir2,mdir3},volume/{data1,data2,data3},mount}
+mkdir -p /seaweedfs/{master/{mdir1,mdir2,mdir3},volume/{data1,data2,data3},mount1,mount2}
 
 # 生成配置文件
 mkdir -p /seaweedfs/filer
@@ -73,13 +73,21 @@ command="/usr/local/bin/weed -logdir=/seaweedfs/log/volume3 volume -dir=/seaweed
 create_service
 
 #filer服务
-service_name="weed-filer-server"
-command="/usr/local/bin/weed -logdir=/seaweedfs/log/filer filer -master=${ip}:9331,${ip}:9332,${ip}:9333 -port=8888 -defaultReplicaPlacement=001"
+service_name="weed-filer-server1"
+command="/usr/local/bin/weed -logdir=/seaweedfs/log/filer1 filer -master=${ip}:9331,${ip}:9332,${ip}:9333 -port=8888 -defaultReplicaPlacement=001"
+create_service
+
+service_name="weed-filer-server2"
+command="/usr/local/bin/weed -logdir=/seaweedfs/log/filer2 filer -master=${ip}:9331,${ip}:9332,${ip}:9333 -port=8889 -defaultReplicaPlacement=001"
 create_service
 
 #mount服务
-service_name="weed-mount-server"
-command="/usr/local/bin/weed -logdir=/seaweedfs/log/mount mount -filer=${ip}:8888 -dir=/seaweedfs/mount"
+service_name="weed-mount-server1"
+command="/usr/local/bin/weed -logdir=/seaweedfs/log/mount1 mount -filer=${ip}:8888 -dir=/seaweedfs/mount1"
+create_service
+
+service_name="weed-mount-server2"
+command="/usr/local/bin/weed -logdir=/seaweedfs/log/mount2 mount -filer=${ip}:8889 -dir=/seaweedfs/mount2"
 create_service
 
 # 重载配置
@@ -92,8 +100,10 @@ systemctl start weed-master-server3.service
 systemctl start weed-volume-server1.service
 systemctl start weed-volume-server2.service
 systemctl start weed-volume-server3.service
-systemctl start weed-filer-server.service
-systemctl start weed-mount-server.service
+systemctl start weed-filer-server1.service
+systemctl start weed-filer-server2.service
+systemctl start weed-mount-server1.service
+systemctl start weed-mount-server2.service
 
 #设置服务开机自启
 systemctl enable weed-master-server1.service
@@ -103,7 +113,9 @@ systemctl enable weed-volume-server1.service
 systemctl enable weed-volume-server2.service
 systemctl enable weed-volume-server3.service
 systemctl enable weed-filer-server1.service
+systemctl enable weed-filer-server2.service
 systemctl enable weed-mount-server1.service
+systemctl enable weed-mount-server2.service
 
 #查看进程状态
 ps -ef | grep weed
