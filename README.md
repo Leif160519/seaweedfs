@@ -51,11 +51,13 @@ seaweed二进制文件
 /seaweedfs/
 ├── filer
 ├── log
-│   ├── filer
+│   ├── filer1
+│   ├── filer2
 │   ├── master1
 │   ├── master2
 │   ├── master3
-│   ├── mount
+│   ├── mount1
+│   ├── mount2
 │   ├── volume1
 │   ├── volume2
 │   └── volume3
@@ -63,7 +65,8 @@ seaweed二进制文件
 │   ├── mdir1
 │   ├── mdir2
 │   └── mdir3
-├── mount
+├── mount1
+├── mount2
 └── volume
     ├── data1
     ├── data2
