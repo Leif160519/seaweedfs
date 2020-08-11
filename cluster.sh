@@ -1,5 +1,5 @@
 #!/bin/bash
-ip=`ip a | grep inet | grep -v inet6 | grep -v 127 | sed 's/^[ \t]*//g' | cut -d ' ' -f2 | grep -v 172 | cut -d '/' -f1 | head -1`
+ip=`ip a | grep inet | grep -v inet6 | grep -v 127.0.0.1 | sed 's/^[ \t]*//g' | cut -d ' ' -f2 |cut -d '/' -f1 | grep -v 172. | head -1`
 # 单节点:3 master(9331-9333) + 3 volume(8081-8083) + 2 filer(8801-8802)
 
 #将二进制文件复制到指定目录
