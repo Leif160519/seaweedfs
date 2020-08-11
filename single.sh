@@ -2,8 +2,8 @@
 
 # 单节点:1 master(9333) + 1 volume(8081) + 1 filer(8888)
 
-#将二进制文件复制到指定目录
-cp bin/weed /usr/local/bin
+#将二进制文件复制到指定目录(如果有则不覆盖)
+cp -n bin/weed /usr/local/bin
 
 #创建目录结构
 #创建日志目录
@@ -17,7 +17,7 @@ mkdir -p /seaweedfs/filer
 /usr/local/bin/weed scaffold -config filer -output="/seaweedfs/filer/"
 
 #查看目录结构
-tree /seaweedfs
+tree /seaweedfs -d
 
 #生成服务启动文件
 function create_service(){
@@ -71,8 +71,5 @@ systemctl enable weed-volume-server.service
 systemctl enable weed-filer-server.service
 systemctl enable weed-mount-server.service
 
-#查看服务状态
-systemctl status weed-master-server.service
-systemctl status weed-volume-server.service
-systemctl status weed-filer-server.service
-systemctl status weed-mount-server.service
+#查看进程状态
+ps -ef | grep weed

@@ -2,8 +2,8 @@
 ip=`ip a | grep inet | grep -v inet6 | grep -v 127.0.0.1 | sed 's/^[ \t]*//g' | cut -d ' ' -f2 |cut -d '/' -f1 | grep -v 172. | head -1`
 # 单节点:3 master(9331-9333) + 3 volume(8081-8083) + 2 filer(8801-8802)
 
-#将二进制文件复制到指定目录
-cp bin/weed /usr/local/bin
+#将二进制文件复制到指定目录(如果有则不覆盖)
+cp -n bin/weed /usr/local/bin
 
 #创建目录结构
 #创建日志目录
@@ -17,7 +17,7 @@ mkdir -p /seaweedfs/filer
 /usr/local/bin/weed scaffold -config filer -output="/seaweedfs/filer/"
 
 #查看目录结构
-tree /seaweedfs
+tree /seaweedfs -d
 
 #生成服务启动文件
 function create_service(){
@@ -107,14 +107,5 @@ systemctl enable weed-filer-server2.service
 systemctl enable weed-mount-server1.service
 systemctl enable weed-mount-server2.service
 
-#查看服务状态
-systemctl status weed-master-server1.service
-systemctl status weed-master-server2.service
-systemctl status weed-master-server3.service
-systemctl status weed-volume-server1.service
-systemctl status weed-volume-server2.service
-systemctl status weed-volume-server3.service
-systemctl status weed-filer-server1.service
-systemctl status weed-filer-server2.service
-systemctl status weed-mount-server1.service
-systemctl status weed-mount-server2.service
+#查看进程状态
+ps -ef | grep weed
