@@ -140,6 +140,32 @@ curl -X DELETE http://localhost:8888/path/to/dir?recursive=true&ignoreRecursiveE
 ## 4.部署seaweedfs步骤
 参看`single.sh`和`cluster.sh`脚本注解
 
+## 5.关于数据副本Replication
+| xyz |	Meaning |
+| --- | ------- |
+| 000 | 不复制，只有一个副本，默认设置 |
+| 001 |	在相同的机架上复制一份 |
+| 010 |	在相同数据中心的不同的机架上复制一份 |
+| 100 |	在另一个数据中心上复制一份 |
+| 200 |	在其他两个不同的数据中心上复制两份 |
+| 110 |	在不同的机架上复制一份，并在不同的数据中心上复制一份 |
+
+| 列 | 含义 |
+| - | ----- |
+| x | number of replica in other data centers |
+| y | number of replica in other racks in the same data center |
+| z | number of replica in other servers in the same rack |
+
+> 创建的物理副本数量等于X+Y+Z+1，XYZ数字取值范围为0,1,2。
+
+### 5.1 如何使用
+在master上指定复制类型并启动之后，启动volume server的参数上指定`datacenter`和`rack`：
+```
+-dataCenter=dc1 -rack=rack1 
+```
+
+[详见wiki](https://github.com/chrislusf/seaweedfs/wiki/Replication)
+
 ## 5.参考
 - [seaweedfs搭建与使用](https://blog.wangqi.love/articles/seaweedfs/seaweedfs%E6%90%AD%E5%BB%BA%E4%B8%8E%E4%BD%BF%E7%94%A8.html)
 - [海草海草随波飘摇，海草海草浪花里舞蹈](https://github.com/bingoohuang/blog/issues/57)
