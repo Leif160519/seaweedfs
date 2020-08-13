@@ -166,6 +166,9 @@ curl -X DELETE http://localhost:8888/path/to/dir?recursive=true&ignoreRecursiveE
 
 [详见wiki](https://github.com/chrislusf/seaweedfs/wiki/Replication)
 
-## 5.参考
+## 6.关于多个filer和多个mount
+[issuse 1423](https://github.com/chrislusf/seaweedfs/issues/1423)
+
+## 7.参考
 - [seaweedfs搭建与使用](https://blog.wangqi.love/articles/seaweedfs/seaweedfs%E6%90%AD%E5%BB%BA%E4%B8%8E%E4%BD%BF%E7%94%A8.html)
 - [海草海草随波飘摇，海草海草浪花里舞蹈](https://github.com/bingoohuang/blog/issues/57)
