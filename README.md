@@ -51,13 +51,11 @@ seaweed二进制文件
 /seaweedfs/
 ├── filer
 ├── log
-│   ├── filer1
-│   ├── filer2
+│   ├── filer
 │   ├── master1
 │   ├── master2
 │   ├── master3
-│   ├── mount1
-│   ├── mount2
+│   ├── mount
 │   ├── volume1
 │   ├── volume2
 │   └── volume3
@@ -65,8 +63,7 @@ seaweed二进制文件
 │   ├── mdir1
 │   ├── mdir2
 │   └── mdir3
-├── mount1
-├── mount2
+├── mount
 └── volume
     ├── data1
     ├── data2
@@ -169,6 +166,47 @@ curl -X DELETE http://localhost:8888/path/to/dir?recursive=true&ignoreRecursiveE
 ## 6.关于多个filer和多个mount
 [issuse 1423](https://github.com/chrislusf/seaweedfs/issues/1423)
 
-## 7.参考
+## 7.关于filer高可用和负载均衡
+可以使用keepalived的方式实现filer的负载均衡，保证每个局域网只有一个filer在工作，从而避免多个mount客户端数据不同步的问题。
+
+## 8.关于元数据的存储的比较
+详情：[SeaweedFS Wiki-Filer Stores](https://www.bookstack.cn/read/seaweedfs-wiki/3550db3b29308feb.md)
+
+| 文件存储名称 | 查找复杂度 | 文件夹中文件数目 |          可扩展性         | Renaming | TTL |                                注意                               |
+| ------------ | ---------- | ---------------- | ------------------------- | -------- | --- | ----------------------------------------------------------------- |
+|     内存     |     O(1)   |    受内存限制    |         本地，快速        |          |     |                    仅用于测试，没有持久性存储                     |
+|    leveldb   |   O(logN)  |      无限制      |         本地，非常快      |          |     |                             默认，可扩展                          |
+|   leveldb2   |   O(logN)  |      无限制      | 本地，非常快，比leveldb快 |          |     | 与leveldb相似，查找键的一部分是128位MD5，而不是较长的完整文件路径 |
+|     Redis    |   O(logN)  |      无限制      |     本地或分布式，最快    |          |  是 |               一个目录的子文件名存储在一个键值输入中              |
+|   Cassandra  |   O(logN)  |      无限制      |    本地或分布式，非常快   |          |  是 |                                                                   |
+|     MySql    |   O(logN)  |      无限制      |     本地或分布式，快速    | 原子操作 |     |                               易于管理                            |
+|   Postgres   |   O(logN)  |      无限制      |     本地或分布式，快速    | 原子操作 |     |                               易于管理                            |
+|     MemSql   |   O(logN)  |      无限制      |         分布式，快速      | 原子操作 |     |                                可扩展                             |
+|      TiDB    |   O(logN)  |      无限制      |         分布式，快速      | 原子操作 |     |                                可扩展                             |
+| CockroachDB  |   O(logN)  |      无限制      |         分布式，快速      | 原子操作 |     |                                可扩展                             |
+|     Etcd     |   O(logN)  |     10GB左右     |   分布式，每秒10000次写入 |          |     |                            没有SPOF。高可用                       |
+|     TiKV     |   O(logN)  |      无限制      |     本地或分布式，快速    |          |     |                                易于管理                           |
+
+切换数据存储
+```
+# first save current filer meta data
+ 
+$ weed shell
+> fs.cd   http://filerHost:filerPort/
+> fs.meta.save
+...
+total 65 directories, 292 files
+meta data for http://localhost:8888/ is saved to localhost-8888-20190417-005421.meta
+> exit
+ 
+# now switch to a new filer, and load the previously saved metadata
+$ weed shell
+> fs.meta.load localhost-8888-20190417-005421.meta
+...
+total 65 directories, 292 files
+localhost-8888-20190417-005421.meta is loaded to http://localhost:8888/
+```
+
+## 9.参考
 - [seaweedfs搭建与使用](https://blog.wangqi.love/articles/seaweedfs/seaweedfs%E6%90%AD%E5%BB%BA%E4%B8%8E%E4%BD%BF%E7%94%A8.html)
 - [海草海草随波飘摇，海草海草浪花里舞蹈](https://github.com/bingoohuang/blog/issues/57)
