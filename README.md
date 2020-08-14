@@ -1,6 +1,8 @@
 - [seaweed仓库地址](https://github.com/chrislusf/seaweedfs)
 - [seaweed版本发布地址](https://github.com/chrislusf/seaweedfs/releases)
 
+seaweedfs版本：1.87 [a6b59d5](https://github.com/chrislusf/seaweedfs/commit/a6b59d50f7f36a36f42ace7a9fa94b60805b78be)
+
 原理图
 
 ![image.png](images/4.png)
@@ -207,6 +209,12 @@ total 65 directories, 292 files
 localhost-8888-20190417-005421.meta is loaded to http://localhost:8888/
 ```
 
-## 9.参考
+## 9.关于性能指标
+参考：[System Metrics](https://github.com/chrislusf/seaweedfs/wiki/System-Metrics)
+
+在所有的master节点命令后面添加`-metrics.address=<prometheus_gateway_host_name>:<prometheus_gateway_port>`参数即可
+
+> 需要额外安装prometheus pushgateway
+## 10.参考
 - [seaweedfs搭建与使用](https://blog.wangqi.love/articles/seaweedfs/seaweedfs%E6%90%AD%E5%BB%BA%E4%B8%8E%E4%BD%BF%E7%94%A8.html)
 - [海草海草随波飘摇，海草海草浪花里舞蹈](https://github.com/bingoohuang/blog/issues/57)

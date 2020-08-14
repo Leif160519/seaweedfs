@@ -23,7 +23,7 @@ tree /seaweedfs -d
 function create_service(){
 cat <<EOF > /lib/systemd/system/${service_name}.service
 [Unit]
-Description=weed-master-server
+Description=${service_name}
 After=network.target
 
 [Service]
