@@ -34,7 +34,6 @@ seaweed二进制文件
 文件结构:
 ```
 /seaweedfs
-├── filer
 ├── log
 │   ├── filer
 │   ├── master
@@ -51,7 +50,6 @@ seaweed二进制文件
 文件结构：
 ```
 /seaweedfs/
-├── filer
 ├── log
 │   ├── filer
 │   ├── master1
@@ -78,6 +76,13 @@ seaweed二进制文件
 
 ### upload.sh
 文件上传脚本
+
+### check_weed.sh
+检测weed进程的脚本
+
+### keepalived.conf
+keepalived配置文件，结合vip可以实现filer的高可用，并且可以起到监控weed进程的作用，根据实际情况进行配置参数的取舍即可。
+
 
 ## 2.seaweed用法简介
 
