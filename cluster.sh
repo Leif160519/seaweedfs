@@ -10,14 +10,19 @@ cp -n bin/weed /usr/local/bin
 mkdir -p /seaweedfs/log/{master1,master2,master3,volume1,volume2,volume3,filer,mount}
 
 # 创建数据存储目录
-mkdir -p /seaweedfs/{master/{mdir1,mdir2,mdir3},volume/{data1,data2,data3},mount}
+mkdir -p /seaweedfs/{master/{mdir1,mdir2,mdir3},volume/{data1,data2,data3}
+
+# 创建挂载目录
+mkdir -p /mount
 
 # 生成配置文件
 mkdir -p /etc/seaweedfs/
-/usr/local/bin/weed scaffold -config filer -output="/etc/seaweedfs/"
+/usr/local/bin/weed scaffold -config filer -output="/etc/seaweedfs"
 
 #查看目录结构
 tree /seaweedfs -d
+
+tree /etc/seaweed
 
 #生成服务启动文件
 function create_service(){
@@ -69,7 +74,7 @@ create_service
 
 #mount服务
 service_name="weed-mount-server"
-command="/usr/local/bin/weed -logdir=/seaweedfs/log/mount mount -filer=${ip}:8888 -dir=/seaweedfs/mount"
+command="/usr/local/bin/weed -logdir=/seaweedfs/log/mount mount -filer=${ip}:8888 -dir=/mount"
 create_service
 
 # 重载配置

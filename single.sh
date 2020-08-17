@@ -5,35 +5,30 @@
 #将二进制文件复制到指定目录(如果有则不覆盖)
 cp -n bin/weed /usr/local/bin
 
-# 将配置文件复制到/etc/seaweedfs下
-mkdir -p /etc/seaweedfs
-cp -n filer.toml /etc/seaweedfs/
-
-# 安装redis
-apt-get -y install redis
-
-#启动redis
-systemctl start redis
-
 #创建目录结构
 #创建日志目录
 mkdir -p /seaweedfs/log/{master,volume,filer,mount}
 
 # 创建数据存储目录
-mkdir -p /seaweedfs/{master,volume,mount}
+mkdir -p /seaweedfs/{master,volume}
+
+# 创建挂载目录
+mkdir -p /mount
 
 # 生成配置文件
-mkdir -p /seaweedfs/filer
-/usr/local/bin/weed scaffold -config filer -output="/seaweedfs/filer/"
+mkdir -p /etc/seaweedfs/
+/usr/local/bin/weed scaffold -config filer -output="/etc/seaweedfs"
 
 #查看目录结构
 tree /seaweedfs -d
+
+tree /etc/seaweed
 
 #生成服务启动文件
 function create_service(){
 cat <<EOF > /lib/systemd/system/weed-${service_name}-server.service
 [Unit]
-Description=weed-master-server
+Description=${service_name}
 After=network.target
 
 [Service]
@@ -64,7 +59,7 @@ create_service
 
 #mount服务
 service_name="mount"
-command="/usr/local/bin/weed -logdir=/seaweedfs/log/mount mount -filer=localhost:8888 -dir=/seaweedfs/mount"
+command="/usr/local/bin/weed -logdir=/seaweedfs/log/mount mount -filer=localhost:8888 -dir=/mount"
 create_service
 
 systemctl daemon-reload
