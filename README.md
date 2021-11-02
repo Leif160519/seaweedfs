@@ -1,7 +1,7 @@
-- [seaweed仓库地址](https://github.com/chrislusf/seaweedfs)
-- [seaweed版本发布地址](https://github.com/chrislusf/seaweedfs/releases)
+- [seaweed仓库地址][1]
+- [seaweed版本发布地址][2]
 
-seaweedfs版本：1.87 [a6b59d5](https://github.com/chrislusf/seaweedfs/commit/a6b59d50f7f36a36f42ace7a9fa94b60805b78be)
+seaweedfs版本：1.87 [a6b59d5][3]
 
 原理图
 
@@ -71,7 +71,7 @@ seaweed二进制文件
 ```
 
 > master节点必须奇数个
-> 当filer与mount一起使用时，filer仅提供文件元数据检索，实际文件内容直接在mount和volume服务器之间读写，所以不需要多个filer 
+> 当filer与mount一起使用时，filer仅提供文件元数据检索，实际文件内容直接在mount和volume服务器之间读写，所以不需要多个filer
 
 
 ### upload.sh
@@ -165,19 +165,19 @@ curl -X DELETE http://localhost:8888/path/to/dir?recursive=true&ignoreRecursiveE
 ### 5.1 如何使用
 在master上指定复制类型并启动之后，启动volume server的参数上指定`datacenter`和`rack`：
 ```
--dataCenter=dc1 -rack=rack1 
+-dataCenter=dc1 -rack=rack1
 ```
 
-[详见wiki](https://github.com/chrislusf/seaweedfs/wiki/Replication)
+[详见wiki][4]
 
 ## 6.关于多个filer和多个mount
-[issuse 1423](https://github.com/chrislusf/seaweedfs/issues/1423)
+[issuse 1423][5]
 
 ## 7.关于filer高可用和负载均衡
 可以使用keepalived的方式实现filer的负载均衡，保证每个局域网只有一个filer在工作，从而避免多个mount客户端数据不同步的问题。
 
 ## 8.关于元数据的存储的比较
-详情：[SeaweedFS Wiki-Filer Stores](https://www.bookstack.cn/read/seaweedfs-wiki/3550db3b29308feb.md)
+详情：[SeaweedFS Wiki-Filer Stores][6]
 
 | 文件存储名称 | 查找复杂度 | 文件夹中文件数目 |          可扩展性         | Renaming | TTL |                                注意                               |
 | ------------ | ---------- | ---------------- | ------------------------- | -------- | --- | ----------------------------------------------------------------- |
@@ -197,7 +197,7 @@ curl -X DELETE http://localhost:8888/path/to/dir?recursive=true&ignoreRecursiveE
 切换数据存储
 ```
 # first save current filer meta data
- 
+
 $ weed shell
 > fs.cd   http://filerHost:filerPort/
 > fs.meta.save
@@ -205,7 +205,7 @@ $ weed shell
 total 65 directories, 292 files
 meta data for http://localhost:8888/ is saved to localhost-8888-20190417-005421.meta
 > exit
- 
+
 # now switch to a new filer, and load the previously saved metadata
 $ weed shell
 > fs.meta.load localhost-8888-20190417-005421.meta
@@ -215,7 +215,7 @@ localhost-8888-20190417-005421.meta is loaded to http://localhost:8888/
 ```
 
 ## 9.关于性能指标
-参考：[System Metrics](https://github.com/chrislusf/seaweedfs/wiki/System-Metrics)
+参考：[System Metrics][7]
 
 在所有的master节点命令后面添加`-metrics.address=<prometheus_gateway_host_name>:<prometheus_gateway_port>`参数即可
 
@@ -223,5 +223,16 @@ localhost-8888-20190417-005421.meta is loaded to http://localhost:8888/
 
 
 ## 10.参考
-- [seaweedfs搭建与使用](https://blog.wangqi.love/articles/seaweedfs/seaweedfs%E6%90%AD%E5%BB%BA%E4%B8%8E%E4%BD%BF%E7%94%A8.html)
-- [海草海草随波飘摇，海草海草浪花里舞蹈](https://github.com/bingoohuang/blog/issues/57)
+- [seaweedfs搭建与使用][8]
+- [海草海草随波飘摇，海草海草浪花里舞蹈][9]
+
+
+[1]: https://github.com/chrislusf/seaweedfs
+[2]: https://github.com/chrislusf/seaweedfs/releases
+[3]: https://github.com/chrislusf/seaweedfs/commit/a6b59d50f7f36a36f42ace7a9fa94b60805b78be
+[4]: https://github.com/chrislusf/seaweedfs/wiki/Replication
+[5]: https://github.com/chrislusf/seaweedfs/issues/1423
+[6]: https://www.bookstack.cn/read/seaweedfs-wiki/3550db3b29308feb.md
+[7]: https://github.com/chrislusf/seaweedfs/wiki/System-Metrics
+[8]: https://blog.wangqi.love/articles/seaweedfs/seaweedfs%E6%90%AD%E5%BB%BA%E4%B8%8E%E4%BD%BF%E7%94%A8.html
+[9]: https://github.com/bingoohuang/blog/issues/57
